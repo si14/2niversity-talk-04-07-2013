@@ -169,7 +169,6 @@
           </ul>
         </section>
 
-
         <section>
           <h1>Учимся писать на Erlang</h1>
         </section>
@@ -538,18 +537,133 @@ ping:ping(P).
           </code></pre>
         </section>
 
-        <!-- receive/loop with receive/state/rockpaperscissors -->
-
-        <!-- chat with gproc -->
-
-        <!-- glue/parallelism и неудобство/тормоза линейного кода -->
-
-        <!-- books to read -->
-
-        <!-- libs to check -->
-
-        <!-- link to presentation -->
         <section>
+          <h2>Challenge #2</h2>
+        </section>
+
+        <section>
+          <ul>
+            <li>2 процесса
+            <li>игра в камень-ножницы-бумага (rock-paper-scissors)
+            <li>посылается tuple {move, Move, SelfPid}
+            <li>принимается {result, AnotherMove, Winner}
+          </ul>
+          <pre><code data-trim class="no-highlight">
+Moves = [rock, paper, scissors],
+Idx = random:uniform(3),
+MyMove = lists:nth(Idx, Moves)
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight">
+-module(rps).
+-export([run/0, move/2, loop/0]).
+
+run() ->
+    Pid = spawn(?MODULE, loop, []),
+    {ok, Pid}.
+
+move(Pid, Move) ->
+    Pid ! {move, Move, self()}.
+
+rps(rock, paper)    -> me;
+rps(rock, rock)     -> draw;
+rps(rock, scissors) -> you.
+
+make_move(Move) ->
+    Moves = [rock, paper, scissors],
+    Idx = random:uniform(3),
+    MyMove = lists:nth(Idx, Moves),
+    {result, MyMove, rps(Move, MyMove)}.
+
+loop() ->
+    receive
+        {move, Move, From} -> From ! make_move(Move);
+        _ -> ok
+    end,
+    loop().
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight">
+c(rps).
+{ok, P} = rps:run().
+rps:move(P, rock).
+flush().
+          </code></pre>
+        </section>
+
+        <section>
+          <h1>Выводы, заключение, всё такое</h1>
+        </section>
+
+        <section>
+          <h2>Что мы не рассмотрели</h2>
+          <ul>
+            <li>list/binary comprehensions
+            <li>OTP: gen_server, supervisors, releases, …
+            <li>distribution (кластеризация)
+            <li>hot code upgrade
+            <li>ports/NIFs
+            <li>нужные библиотеки
+            <li>Cowboy
+            <li>Dialyzer
+          </ul>
+        </section>
+
+        <section>
+          <h2>Минусы и плюсы</h2>
+          <ul>
+            <li>непривычный синтаксис
+            <li>непривычные концепции
+            <li>непривычные проблемы и грабли
+            <li>фан
+            <li>сложные задачи становятся решаемыми
+            <li>консенсус: нет проблемы с программистами
+          </ul>
+        </section>
+
+        <section>
+          <h2>Неудобно, когда</h2>
+          <ul>
+            <li>много разделяемого мутабельного состояния (Minecraft)
+            <li>классические алгоритмы с мутабельным состоянием (DP)
+            <li>много сложной математики
+            <li>много статических инвариантов в сложной задаче
+          </ul>
+        </section>
+
+        <section>
+          <h2>Гетерогенная среда</h2>
+          <ul>
+            <li>порты/NIFы решают вышеперечисленные проблемы
+            <li>Erlang + C
+            <li>Erlang + Python
+            <li>Erlang + Haskel
+            <li>…
+            <li>Erlang как <b>очень</b> умный роутер (кеш/балансировщик/…)
+          </ul>
+        </section>
+
+        <section>
+          <h2>Ресурсы для самостоятельного изучения</h2>
+          <ul>
+            <li>Learn You Some Erlang (<a href="http://learnyousomeerlang.com/">learnyousomeerlang.com</a>)
+            <li>Programming Erlang
+            <li>Erlang and OTP in Action
+          </ul>
+        </section>
+
+        <section>
+          <h2>Полезные библиотеки</h2>
+          <p>rebar lager gproc cowboy jiffy proper common_test poolboy meck neotoma erlydrl riak</p>
+        </section>
+
+        <section>
+          <h2>Спасибо за внимание!</h2>
+          <p>Ссылка на презентацию: <a href="http://si14.github.io/2niversity-talk-04-07-2013">si14.github.io/2niversity-talk-04-07-2013</a></p>
         </section>
 
 	  </div>
