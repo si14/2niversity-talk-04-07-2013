@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+	<meta charset="utf-8">
+
+	<title>Erlang</title>
+
+	<meta name="description" content="Slides for 2Niversity talk on Erlang">
+	<meta name="author" content="Dmitry Groshev">
+
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<!--
+        <link rel="stylesheet" href="css/theme/default.css" id="theme"> -->
+	<link rel="stylesheet" href="css/theme/serif.css" id="theme">
+
+	<!-- For syntax highlighting -->
+	<!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+	<link rel="stylesheet" href="lib/css/hemisu-light.css">
+
+	<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+	<!-- <script> -->
+	<!--   document.write( ' -->
+    <!--   <link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' ); -->
+	<!-- </script> -->
+
+	<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js">
+        </script>
+		<![endif]-->
+  </head>
+
+  <body>
+	<div class="reveal">
+	  <!-- Any section element inside of this container is displayed as a slide -->
+	  <div class="slides">
+		<section>
+		  <h1>Erlang</h1>
+		  <h3>Наследие АТС в вашей браузерке</h3>
+		  <p>
+			<small>Дмитрий Грошев (<a href="http://twitter.com/lambdadmitry">@lambdadmitry</a>)</small>
+		  </p>
+		</section>
+
+        <section>
+          <h2>Сегодня</h2>
+          <ul>
+            <li>в целом про Erlang
+            <li>основы синтаксиса
+            <li>основы работы с процессами
+            <li>играем в города
+            <li>чем плох Erlang
+            <li>где и что можно почитать
+            <li>секретный бонус
+          </ul>
+        </section>
+
+        <section>
+          <h1>Введение</h1>
+        </section>
+
+        <section>
+          <h2>История</h2>
+          <ul>
+            <li>Шведы
+            <li>Ericsson
+            <li>1986
+            <li>Prolog (хипстеры)
+            <li>Сложная история, но opensource в 1998
+          </ul>
+        </section>
+
+        <section>
+          <h2>AXD301</h2>
+          <p><img src="axd301.jpg"></p>
+          <ul>
+            <li>poster child
+            <li>1998
+            <li>девять 9к (99.999999999%)
+          </ul>
+        </section>
+
+        <section>
+          <h2>Сегодня</h2>
+          <ul>
+            <li>большая команда разработчиков в Ericsson
+            <li>много патчей от сообщества
+            <li>огромное количество пользователей (Ericsson, Klarna, Wooga, Zinga, CoD/Demonware, Whatsapp, ejabberd, Chef, Basho)
+            <li>стабильность, производительность, масштабируемость >> фичи
+          </ul>
+        </section>
+
+        <section>
+          <h1>Концепции</h1>
+        </section>
+
+        <section>
+          <h2>Concurrency</h2>
+          <p>Разные потоки исполнения существуют независимо друг от друга</p>
+        </section>
+
+        <section>
+          <h2>Parallelism</h2>
+          <p>Разные потоки исполнения выполняются одновременно</p>
+        </section>
+
+        <section>
+          <h3>Concurrency =/= parallelism</h3>
+          <p>например, green threads</p>
+        </section>
+
+        <section>
+          <h2>Проблема concurrency: разделяемые ресурсы</h2>
+          <p>например, n += 1</p>
+          <ul>
+            <li>удача
+            <li>локи
+            <li>транзакции
+            <li>независимость + сообщения
+          </ul>
+        </section>
+
+        <section>
+          <h2>Независимость:</h2>
+          <ul>
+            <li>ошибок
+            <li>данных
+            <li>исполнения
+          </ul>
+        </section>
+
+        <section>
+          <h2>Независимость ошибок</h2>
+          <p>3 / 0</p>
+          <p>проблема конкретного процесса</p>
+        </section>
+
+        <section>
+          <h2>Независимость данных</h2>
+          <ul>
+            <li>+неизменяемость данных (immutability)
+            <li>просто рассуждать о коде (referential transparency)
+            <li>быстрая сборка мусора
+            <li>разделение данных (binary sharing, zero copy)
+          </ul>
+        </section>
+
+        <section>
+          <h2>Независимость исполнения</h2>
+          <ul>
+            <li>очень низкая latency
+            <li>лёгкий путь к параллелизму (SMP, 2006)
+          </ul>
+        </section>
+
+        <section>
+          <h2>Итого:</h2>
+          <ul>
+            <li>устойчивость к ошибкам
+            <li>крайне низкая latency
+            <li>эффективная работа с бинарными данными
+            <li>отличная утилизация ядер (64+ CPU)
+            <li>АТС, WhatsApp, ваш следующий чат, …
+          </ul>
+        </section>
+
+
+        <section>
+          <h1>Учимся писать на Erlang</h1>
+        </section>
+
+        <section>
+          <h2>SSH</h2>
+          <pre><code data-trim class="no-highlight large">
+FIXME: foobar@127.0.0.1, test
+erl
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight large">
+1.
+342342134324234234543534534534534532454325.
+1.0.
+"abc".
+abc
+<<"abc">>.
+          </code></pre>
+          <p>+, -, *, /, div, rem</p>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight large">
+{1, 2, 3}.
+[4, 5, 6].
+[a | []].
+[a | b].
+[4 | [5 | [6 | []]]].
+[{foo, 1},
+ {bar, 2}].
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight large">
+A = 1.
+A.
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight large">
+A = 1.
+1 = 1.
+A = 2.
+          </code></pre>
+          <p>WTF?</p>
+        </section>
+
+        <section>
+          <p>Pattern matching</p>
+          <pre><code data-trim class="no-highlight large">
+{C, D} = {1, 2}.
+C.
+D.
+{A, C} = {1, 1}.
+{A, C} = {1, 2}.
+{A, E} = {1, 2}.
+f().
+          </code></pre>
+        </section>
+
+        <section>
+          <p>Pattern matching</p>
+          <pre><code data-trim class="no-highlight large">
+[A, B, C] = [1, 2, 3].
+[Head | Tail] = [1, 2, 3].
+[A1, A2 | As] = [1, 2, 3, 4, 5].
+f().
+[A1, A2 | As] = lists:seq(1, 5).
+          </code></pre>
+        </section>
+
+        <section>
+          <p>Pattern matching</p>
+          <pre><code data-trim class="no-highlight large">
+[A, B, C] = [1, 2, 3].
+[Head | Tail] = [1, 2, 3].
+[A1, A2 | As] = [1, 2, 3].
+          </code></pre>
+        </section>
+
+        <section>
+          <p>Binary pattern matching</p>
+          <pre><code data-trim class="no-highlight large">
+S = &lt;&lt;"data"&gt;&gt;.
+LS = size(&lt;&lt;"data"&gt;&gt;).
+B = &lt;&lt;LS/integer, S/binary&gt;&gt;.
+&lt;&lt;LS2/integer, S2:LS2/binary&gt;&gt; = B.
+          </code></pre>
+          <p>Реализовывать бинарные протоколы <b>очень</b> просто</p>
+        </section>
+
+        <section>
+          <p>Модули</p>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight large">
+-module(hello_world3).
+-export([hello/1]).
+
+hello(Name) ->
+    io:format("Hello, ~s!~n", [Name]),
+    {hello, Name}.
+          </code></pre>
+          <pre><code data-trim class="no-highlight large">
+c(hello_world3).
+{What, Who} = hello_world3:hello("Joe").
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight large">
+-module(fac).
+-export([fac/1]).
+
+fac(X) ->
+    case X > 0 of
+        true  -> X * fac(X - 1);
+        false -> 1
+    end.
+          </code></pre>
+          <pre><code data-trim class="no-highlight large">
+c(fac).
+fac:fac(5).
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight large">
+-module(fac).
+-export([fac/1]).
+
+fac(X) when X > 0 -> X * fac(X - 1);
+fac(_) -> 1.
+          </code></pre>
+          <pre><code data-trim class="no-highlight large">
+c(fac).
+fac:fac(5).
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight large">
+-module(fac).
+-export([fac/1]).
+
+fac(0) -> 1;
+fac(X) -> X * fac(X - 1).
+          </code></pre>
+          <pre><code data-trim class="no-highlight large">
+c(fac).
+fac:fac(5).
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight large">
+-module(notsougly).
+-export([code/1]).
+
+code(404) -> "not found";
+code(500) -> "server error";
+code(200) -> "ok".
+          </code></pre>
+        </section>
+
+        <section>
+          <p>Теоретический эксперимент</p>
+          <pre><code data-trim class="no-highlight large">
+fac:fac(500000).
+          </code></pre>
+          <p>OOM</p>
+        </section>
+
+        <section>
+          <p>Хвостовая рекурсия</p>
+          <pre><code data-trim class="no-highlight large">
+-module(fac).
+-export([fac/1]).
+
+fac(X) -> fac(X, 1).
+
+fac(0, S) -> S;
+fac(X, S) -> fac(X - 1, X * S).
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Euler 1</h2>
+        </section>
+
+        <section>
+          <p> Среди чисел до 10 есть следующие делимые на 3 или 5: 3, 5, 6, 9. Сумма равна 23.</p>
+          <p>Найти сумму всех делимых на 3 или 5 среди чисел до 1000. </p>
+          <pre><code data-trim class="no-highlight large">
+4 rem 2.
+5 rem 2.
+if
+    1 == 2 -> a;
+    2 == 3 -> b;
+    true   -> c
+end.
+          </code></pre>
+        </section>
+
+        <section>
+          <p>Хвостовая рекурсия</p>
+          <pre><code data-trim class="no-highlight large">
+-module(euler1).
+-export([f/1]).
+
+f(X) -> f(X - 1, 0).
+
+f(0, S) -> S;
+f(X, S) ->
+    if
+        X rem 3 == 0 -> f(X - 1, S + X);
+        X rem 5 == 0 -> f(X - 1, S + X);
+        true         -> f(X - 1, S)
+    end.
+          </code></pre>
+        </section>
+
+        <section>
+          <h1>Учимся общаться на Erlang</h1>
+        </section>
+
+        <section>
+          pids, messages, mailbox
+        </section>
+
+        <!-- чатик + города -->
+        <!-- в конце про glue/parallelism и неудобство/тормоза линейного кода -->
+	  </div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.min.js"></script>
+
+	<script>
+
+	  // Full list of configuration options available here:
+	  // https://github.com/hakimel/reveal.js#configuration
+	  Reveal.initialize({
+	  controls: false,
+	  progress: true,
+	  history: true,
+	  center: true,
+
+	  theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+	  transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+	  // Optional libraries used to extend on reveal.js
+	  dependencies: [
+	  { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+	  { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+	  { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+	  { src: 'plugin/highlight/highlight.js', async: true, callback: function() {  hljs.initHighlightingOnLoad(); } },
+	  { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+	  { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+	  // { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+	  // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+	  ]
+	  });
+
+	</script>
+
+  </body>
+</html>
