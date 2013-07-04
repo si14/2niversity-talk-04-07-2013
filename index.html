@@ -177,7 +177,9 @@
         <section>
           <h2>SSH</h2>
           <pre><code data-trim class="no-highlight large">
-FIXME: foobar@127.0.0.1, test
+ssh 2niv@46.182.24.139
+password: 2niversity
+mkdir 123 && cd 123
 erl
           </code></pre>
         </section>
@@ -189,6 +191,7 @@ erl
 1.0.
 "abc".
 abc
+'abc'
 <<"abc">>.
           </code></pre>
           <p>+, -, *, /, div, rem</p>
@@ -264,6 +267,14 @@ B = &lt;&lt;LS/integer, S/binary&gt;&gt;.
 &lt;&lt;LS2/integer, S2:LS2/binary&gt;&gt; = B.
           </code></pre>
           <p>Реализовывать бинарные протоколы <b>очень</b> просто</p>
+        </section>
+
+        <section>
+          <p>Анонимные функции</p>
+          <pre><code data-trim class="no-highlight large">
+F = fun(X) -> X + 1 end.
+F(3).
+          </code></pre>
         </section>
 
         <section>
@@ -363,7 +374,7 @@ fac(X, S) -> fac(X - 1, X * S).
         </section>
 
         <section>
-          <h2>Euler 1</h2>
+          <h2>Challenge #1</h2>
         </section>
 
         <section>
@@ -382,7 +393,7 @@ end.
 
         <section>
           <p>Хвостовая рекурсия</p>
-          <pre><code data-trim class="no-highlight large">
+          <pre><code data-trim class="no-highlight">
 -module(euler1).
 -export([f/1]).
 
@@ -403,11 +414,144 @@ f(X, S) ->
         </section>
 
         <section>
-          pids, messages, mailbox
+          <pre><code data-trim class="no-highlight large">
+self().
+self() ! hello.
+flush().
+pid(0, 33, 0) ! hello.
+flush().
+          </code></pre>
         </section>
 
-        <!-- чатик + города -->
-        <!-- в конце про glue/parallelism и неудобство/тормоза линейного кода -->
+        <section>
+          <h2>Основные понятия</h2>
+          <ul>
+            <li>PID
+            <li>message
+            <li>mailbox
+            <li>share nothing (except binaries)
+          </ul>
+          <p>Трюки: блокировка отправляющего, шедулинг</p>
+        </section>
+
+
+        <section>
+          <pre><code data-trim class="no-highlight large">
+Ctrl+g
+h
+s
+c 2
+self().
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight large">
+Ctrl+g
+c 1
+self().
+pid(0, 77, 0) ! {"hi there!", joe}.
+Ctrl+g
+c 2
+flush().
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight large">
+P = self().
+spawn(fun() -> P ! whatsup end).
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight large">
+P = self().
+spawn(fun() ->
+         timer:sleep(1000),
+         P ! whatsup
+      end).
+receive X -> io:format("got ~p~n", [X]) end.
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight large">
+self().
+receive
+    {hi, From} -> From ! hello;
+    X -> io:format("got ~p~n", [X])
+end.
+          </code></pre>
+          <pre><code data-trim class="no-highlight large">
+pid(0, 33, 0) ! {hi, self()}.
+flush().
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight">
+-module(ping).
+-export([run/0, loop/0]).
+
+run() ->
+    Pid = spawn(?MODULE, loop, []),
+    {ok, Pid}.
+
+loop() ->
+    receive
+        {ping, From} -> From ! pong;
+        _ -> ok
+    end,
+    loop().
+          </code></pre>
+          <pre><code data-trim class="no-highlight">
+c(ping).
+{ok, P} = ping:run().
+P ! {ping, self()}.
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim class="no-highlight">
+-module(ping).
+-export([run/0, loop/0, ping/1]).
+
+run() ->
+    Pid = spawn(?MODULE, loop, []),
+    {ok, Pid}.
+
+ping(Pid) ->
+    Pid ! {ping, self()}.
+
+loop() ->
+    receive
+        {ping, From} -> From ! pong;
+        _ -> ok
+    end,
+    loop().
+          </code></pre>
+          <pre><code data-trim class="no-highlight">
+c(ping).
+{ok, P} = ping:run().
+ping:ping(P).
+          </code></pre>
+        </section>
+
+        <!-- receive/loop with receive/state/rockpaperscissors -->
+
+        <!-- chat with gproc -->
+
+        <!-- glue/parallelism и неудобство/тормоза линейного кода -->
+
+        <!-- books to read -->
+
+        <!-- libs to check -->
+
+        <!-- link to presentation -->
+        <section>
+        </section>
+
 	  </div>
 	</div>
 
