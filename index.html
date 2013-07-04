@@ -184,105 +184,85 @@
 
         <section>
           <h2>SSH</h2>
-          <pre><code data-trim class="no-highlight large">
-ssh 2niv@46.182.24.139
+          <pre><code data-trim class="no-highlight large">ssh 2niv@46.182.24.139
 password: 2niversity
 mkdir 123 && cd 123
-erl
-          </code></pre>
+erl</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight large">
-1.
+          <pre><code data-trim class="erlang-repl large">1.
 342342134324234234543534534534534532454325.
 1.0.
 "abc".
 abc
 'abc'
-<<"abc">>.
-          </code></pre>
+<<"abc">>.</code></pre>
           <p>+, -, *, /, div, rem</p>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight large">
-{1, 2, 3}.
+          <pre><code data-trim class="erlang-repl large">{1, 2, 3}.
 [4, 5, 6].
 [a | []].
 [a | b].
 [4 | [5 | [6 | []]]].
 [{foo, 1},
- {bar, 2}].
-          </code></pre>
+ {bar, 2}].</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight large">
-A = 1.
-A.
-          </code></pre>
+          <pre><code data-trim class="erlang-repl large">A = 1.
+A.</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight large">
-A = 1.
+          <pre><code data-trim class="erlang-repl large">A = 1.
 1 = 1.
-A = 2.
-          </code></pre>
+A = 2.</code></pre>
           <p>WTF?</p>
         </section>
 
         <section>
           <p>Pattern matching</p>
-          <pre><code data-trim class="no-highlight large">
-{C, D} = {1, 2}.
+          <pre><code data-trim class="erlang-repl large">{C, D} = {1, 2}.
 C.
 D.
 {A, C} = {1, 1}.
 {A, C} = {1, 2}.
 {A, E} = {1, 2}.
-f().
-          </code></pre>
+f().</code></pre>
         </section>
 
         <section>
           <p>Pattern matching</p>
-          <pre><code data-trim class="no-highlight large">
-[A, B, C] = [1, 2, 3].
+          <pre><code data-trim class="erlang-repl large">[A, B, C] = [1, 2, 3].
 [Head | Tail] = [1, 2, 3].
 [A1, A2 | As] = [1, 2, 3, 4, 5].
 f().
-[A1, A2 | As] = lists:seq(1, 5).
-          </code></pre>
+[A1, A2 | As] = lists:seq(1, 5).</code></pre>
         </section>
 
         <section>
           <p>Pattern matching</p>
-          <pre><code data-trim class="no-highlight large">
-[A, B, C] = [1, 2, 3].
+          <pre><code data-trim class="erlang-repl large">[A, B, C] = [1, 2, 3].
 [Head | Tail] = [1, 2, 3].
-[A1, A2 | As] = [1, 2, 3].
-          </code></pre>
+[A1, A2 | As] = [1, 2, 3].</code></pre>
         </section>
 
         <section>
           <p>Binary pattern matching</p>
-          <pre><code data-trim class="no-highlight large">
-S = &lt;&lt;"data"&gt;&gt;.
+          <pre><code data-trim class="erlang-repl large">S = &lt;&lt;"data"&gt;&gt;.
 LS = size(&lt;&lt;"data"&gt;&gt;).
 B = &lt;&lt;LS/integer, S/binary&gt;&gt;.
-&lt;&lt;LS2/integer, S2:LS2/binary&gt;&gt; = B.
-          </code></pre>
+&lt;&lt;LS2/integer, S2:LS2/binary&gt;&gt; = B.</code></pre>
           <p>Реализовывать бинарные протоколы <b>очень</b> просто</p>
         </section>
 
         <section>
           <p>Анонимные функции</p>
-          <pre><code data-trim class="no-highlight large">
-F = fun(X) -> X + 1 end.
-F(3).
-          </code></pre>
+          <pre><code data-trim class="erlang-repl large">F = fun(X) -> X + 1 end.
+F(3).</code></pre>
         </section>
 
         <section>
@@ -290,95 +270,73 @@ F(3).
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight large">
--module(hello_world3).
+          <pre><code data-trim class="erlang large">-module(hello_world3).
 -export([hello/1]).
 
 hello(Name) ->
     io:format("Hello, ~s!~n", [Name]),
-    {hello, Name}.
-          </code></pre>
-          <pre><code data-trim class="no-highlight large">
-c(hello_world3).
-{What, Who} = hello_world3:hello("Joe").
-          </code></pre>
+    {hello, Name}.</code></pre>
+          <pre><code data-trim class="erlang-repl large">c(hello_world3).
+{What, Who} = hello_world3:hello("Joe").</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight large">
--module(fac).
+          <pre><code data-trim class="erlang large">-module(fac).
 -export([fac/1]).
 
 fac(X) ->
     case X > 0 of
         true  -> X * fac(X - 1);
         false -> 1
-    end.
-          </code></pre>
-          <pre><code data-trim class="no-highlight large">
-c(fac).
-fac:fac(5).
-          </code></pre>
+    end.</code></pre>
+          <pre><code data-trim class="erlang-repl large">c(fac).
+fac:fac(5).</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight large">
--module(fac).
+          <pre><code data-trim class="erlang large">-module(fac).
 -export([fac/1]).
 
 fac(X) when X > 0 -> X * fac(X - 1);
-fac(_) -> 1.
-          </code></pre>
-          <pre><code data-trim class="no-highlight large">
-c(fac).
-fac:fac(5).
-          </code></pre>
+fac(_) -> 1.</code></pre>
+          <pre><code data-trim class="erlang-repl large">c(fac).
+fac:fac(5).</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight large">
--module(fac).
+          <pre><code data-trim class="erlang large">-module(fac).
 -export([fac/1]).
 
 fac(0) -> 1;
-fac(X) -> X * fac(X - 1).
-          </code></pre>
-          <pre><code data-trim class="no-highlight large">
-c(fac).
-fac:fac(5).
-          </code></pre>
+fac(X) -> X * fac(X - 1).</code></pre>
+          <pre><code data-trim class="erlang-repl large">c(fac).
+fac:fac(5).</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight large">
--module(notsougly).
+          <pre><code data-trim class="erlang large">-module(notsougly).
 -export([code/1]).
 
 code(404) -> "not found";
 code(500) -> "server error";
-code(200) -> "ok".
-          </code></pre>
+code(200) -> "ok".</code></pre>
         </section>
 
         <section>
           <p>Теоретический эксперимент</p>
-          <pre><code data-trim class="no-highlight large">
-fac:fac(500000).
-          </code></pre>
+          <pre><code data-trim class="erlang-repl large">fac:fac(500000).</code></pre>
           <p>OOM</p>
         </section>
 
         <section>
           <p>Хвостовая рекурсия</p>
-          <pre><code data-trim class="no-highlight large">
--module(fac).
+          <pre><code data-trim class="erlang large">-module(fac).
 -export([fac/1]).
 
 fac(X) -> fac(X, 1).
 
 fac(0, S) -> S;
-fac(X, S) -> fac(X - 1, X * S).
-          </code></pre>
+fac(X, S) -> fac(X - 1, X * S).</code></pre>
         </section>
 
         <section>
@@ -388,21 +346,18 @@ fac(X, S) -> fac(X - 1, X * S).
         <section>
           <p> Среди чисел до 10 есть следующие делимые на 3 или 5: 3,&nbsp;5,&nbsp;6,&nbsp;9. Сумма равна 23.</p>
           <p>Найти сумму всех делимых на 3 или 5 среди чисел до 1000. </p>
-          <pre><code data-trim class="no-highlight large">
-4 rem 2.
+          <pre><code data-trim class="erlang-repl large">4 rem 2.
 5 rem 2.
 if
     1 == 2 -> a;
     2 == 3 -> b;
     true   -> c
-end.
-          </code></pre>
+end.</code></pre>
         </section>
 
         <section>
           <p>Хвостовая рекурсия</p>
-          <pre><code data-trim class="no-highlight">
--module(euler1).
+          <pre><code data-trim class="erlang">-module(euler1).
 -export([f/1]).
 
 f(X) -> f(X - 1, 0).
@@ -413,8 +368,7 @@ f(X, S) ->
         X rem 3 == 0 -> f(X - 1, S + X);
         X rem 5 == 0 -> f(X - 1, S + X);
         true         -> f(X - 1, S)
-    end.
-          </code></pre>
+    end.</code></pre>
         </section>
 
         <section>
@@ -422,13 +376,11 @@ f(X, S) ->
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight large">
-self().
+          <pre><code data-trim class="erlang-repl large">self().
 self() ! hello.
 flush().
 pid(0, 33, 0) ! hello.
-flush().
-          </code></pre>
+flush().</code></pre>
         </section>
 
         <section>
@@ -444,62 +396,49 @@ flush().
 
 
         <section>
-          <pre><code data-trim class="no-highlight large">
-Ctrl+g
+          <pre><code data-trim class="erlang-repl large">Ctrl+g
 h
 s
 c 2
-self().
-          </code></pre>
+self().</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight large">
-Ctrl+g
+          <pre><code data-trim class="erlang-repl large">Ctrl+g
 c 1
 self().
 pid(0, 77, 0) ! {"hi there!", joe}.
 Ctrl+g
 c 2
-flush().
-          </code></pre>
+flush().</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight large">
-P = self().
-spawn(fun() -> P ! whatsup end).
-          </code></pre>
+          <pre><code data-trim class="erlang-repl large">P = self().
+spawn(fun() -> P ! whatsup end).</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight large">
-P = self().
+          <pre><code data-trim class="erlang-repl large">P = self().
 spawn(fun() ->
          timer:sleep(1000),
          P ! whatsup
       end).
-receive X -> io:format("got ~p~n", [X]) end.
-          </code></pre>
+receive X -> io:format("got ~p~n", [X]) end.</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight large">
-self().
+          <pre><code data-trim class="erlang-repl large">self().
 receive
     {hi, From} -> From ! hello;
     X -> io:format("got ~p~n", [X])
-end.
-          </code></pre>
-          <pre><code data-trim class="no-highlight large">
-pid(0, 33, 0) ! {hi, self()}.
-flush().
-          </code></pre>
+end.</code></pre>
+          <pre><code data-trim class="erlang-repl large">pid(0, 33, 0) ! {hi, self()}.
+flush().</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight">
--module(ping).
+          <pre><code data-trim class="erlang">-module(ping).
 -export([run/0, loop/0]).
 
 run() ->
@@ -511,18 +450,14 @@ loop() ->
         {ping, From} -> From ! pong;
         _ -> ok
     end,
-    loop().
-          </code></pre>
-          <pre><code data-trim class="no-highlight">
-c(ping).
+    loop().</code></pre>
+          <pre><code data-trim class="erlang-repl">c(ping).
 {ok, P} = ping:run().
-P ! {ping, self()}.
-          </code></pre>
+P ! {ping, self()}.</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight">
--module(ping).
+          <pre><code data-trim class="erlang">-module(ping).
 -export([run/0, loop/0, ping/1]).
 
 run() ->
@@ -537,13 +472,10 @@ loop() ->
         {ping, From} -> From ! pong;
         _ -> ok
     end,
-    loop().
-          </code></pre>
-          <pre><code data-trim class="no-highlight">
-c(ping).
+    loop().</code></pre>
+          <pre><code data-trim class="erlang-repl">c(ping).
 {ok, P} = ping:run().
-ping:ping(P).
-          </code></pre>
+ping:ping(P).</code></pre>
         </section>
 
         <section>
@@ -557,16 +489,13 @@ ping:ping(P).
             <li>посылается tuple {move, Move, SelfPid}
             <li>принимается {result, AnotherMove, Winner}
           </ul>
-          <pre><code data-trim class="no-highlight">
-Moves = [rock, paper, scissors],
+          <pre><code data-trim class="erlang-repl large">Moves = [rock, paper, scissors],
 Idx = random:uniform(3),
-MyMove = lists:nth(Idx, Moves)
-          </code></pre>
+MyMove = lists:nth(Idx, Moves)</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight">
--module(rps).
+          <pre><code data-trim class="erlang">-module(rps).
 -export([run/0, move/2, loop/0]).
 
 run() ->
@@ -591,17 +520,14 @@ loop() ->
         {move, Move, From} -> From ! make_move(Move);
         _ -> ok
     end,
-    loop().
-          </code></pre>
+    loop().</code></pre>
         </section>
 
         <section>
-          <pre><code data-trim class="no-highlight">
-c(rps).
+          <pre><code data-trim class="erlang-repl large">c(rps).
 {ok, P} = rps:run().
 rps:move(P, rock).
-flush().
-          </code></pre>
+flush().</code></pre>
         </section>
 
         <section>
