@@ -53,10 +53,9 @@
             <li>в целом про Erlang
             <li>основы синтаксиса
             <li>основы работы с процессами
-            <li>играем в города
+            <li>играем в камень-ножницы-бумага
             <li>чем плох Erlang
             <li>где и что можно почитать
-            <li>секретный бонус
           </ul>
         </section>
 
@@ -90,7 +89,7 @@
           <ul>
             <li>большая команда разработчиков в Ericsson
             <li>много патчей от сообщества
-            <li>огромное количество пользователей (Ericsson, Klarna, Wooga, Zinga, CoD/Demonware, Whatsapp, ejabberd, Chef, Basho)
+            <li>огромное количество пользователей (Ericsson, Klarna, Wooga, Zinga, CoD/Demonware, Whatsapp, Chef, Basho; ejabberd)
             <li>стабильность, производительность, масштабируемость&nbsp;&gt;&gt;&nbsp;фичи
           </ul>
         </section>
@@ -101,7 +100,7 @@
 
         <section>
           <h2>Concurrency</h2>
-          <p>Разные потоки исполнения существуют независимо друг от друга</p>
+          <p>Разные потоки исполнения выполняются независимо друг от друга</p>
         </section>
 
         <section>
@@ -143,7 +142,7 @@
         <section>
           <h2>Независимость данных</h2>
           <ul>
-            <li>+неизменяемость данных (immutability)
+            <li>неизменяемость данных (immutability)
             <li>просто рассуждать о коде (referential transparency)
             <li>быстрая сборка мусора
             <li>разделение данных (binary sharing, zero copy)
@@ -156,6 +155,15 @@
             <li>очень низкая latency
             <li>лёгкий путь к параллелизму (SMP, 2006)
           </ul>
+        </section>
+
+        <section>
+          <h2>Challenge #0</h2>
+          <p>node.js</p>
+        </section>
+
+        <section>
+          <p>Что не получилось у node.js?</p>
         </section>
 
         <section>
@@ -377,7 +385,7 @@ fac(X, S) -> fac(X - 1, X * S).
         </section>
 
         <section>
-          <p> Среди чисел до 10 есть следующие делимые на 3 или 5: 3, 5, 6, 9. Сумма равна 23.</p>
+          <p> Среди чисел до 10 есть следующие делимые на 3 или 5: 3,&nbsp;5,&nbsp;6,&nbsp;9. Сумма равна 23.</p>
           <p>Найти сумму всех делимых на 3 или 5 среди чисел до 1000. </p>
           <pre><code data-trim class="no-highlight large">
 4 rem 2.
